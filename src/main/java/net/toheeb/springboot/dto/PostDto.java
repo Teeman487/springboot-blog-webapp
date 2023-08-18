@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PostDto { //Model entity// PostDto is useful when we want to transport data between Controller layer & View Layer
     private Long id;
-    @NotEmpty
+    @NotEmpty(message = "post title should not be empty")
     private String title;
     private String url;
-    @NotEmpty
+    @NotEmpty(message = "post content should not be empty")
     private String content;
-    @NotEmpty
+    @NotEmpty(message = "post short description should not be empty")
     private String shortDescription;
     private LocalDateTime createdOn;
     private LocalDateTime updateOn;

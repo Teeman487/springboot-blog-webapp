@@ -8,4 +8,8 @@ public interface PostService { // Define a method that will retrieve all the pos
 List<PostDto> findAllPosts();
 
 void createPost(PostDto postdto);
+
+PostDto findPostById(Long postId);
+
+void updatePost(PostDto postDto);
 }

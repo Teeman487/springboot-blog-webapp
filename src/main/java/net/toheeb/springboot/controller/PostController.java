@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.thymeleaf.model.IModel;
 
@@ -30,6 +31,7 @@ public class PostController { // Spring tea recomend to use interface for inject
         return "/admin/posts"; // Thymeleaf view name
 
     }
+    // handler method to handle new post request
     @GetMapping("admin/posts/newpost")
     // handler method to handle new post request
     public String newPostForm(Model model) {
@@ -40,7 +42,7 @@ public class PostController { // Spring tea recomend to use interface for inject
     }
     // handler method to handle form submit request
     @PostMapping("/admin/posts")
-    public String createPost(@Valid @ModelAttribute PostDto postDto,
+    public String createPost(@Valid @ModelAttribute("post") PostDto postDto,
                  BindingResult result,
                              Model model
                    ){ // ModelAttribute annotation will read form data and set the values to fields of the model object
@@ -52,6 +54,31 @@ public class PostController { // Spring tea recomend to use interface for inject
 
         postDto.setUrl(getUrl(postDto.getTitle()));
         postService.createPost(postDto);
+        return "redirect:/admin/posts";
+    }
+    // handler method to handle edit post request
+    @GetMapping("/admin/posts/{postId}/edit")
+    public String editPostForm(@PathVariable("postId") Long postId,
+                               Model model){
+
+        PostDto postDto = postService.findPostById(postId);
+        model.addAttribute("post", postDto);
+        return "admin/edit_post";
+
+    }
+
+    // handler method to handle edit post form submit request
+    @PostMapping("/admin/posts/{postId}")
+    public  String  updatePost(@PathVariable("postId") Long postId,
+                             @Valid @ModelAttribute("post") PostDto post,
+                               BindingResult result,
+                               Model model) {
+        if(result.hasErrors()){
+            model.addAttribute("post",post);
+            return  "admin/edit_post";
+        }
+        post.setId(postId);
+        postService.updatePost(post);
         return "redirect:/admin/posts";
     }
     private static String getUrl(String postTitle) {
