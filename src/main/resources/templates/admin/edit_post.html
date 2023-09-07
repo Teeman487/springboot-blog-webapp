@@ -19,7 +19,7 @@
             <div class="card-body">
                 <form role="form" method="post" th:action="@{/admin/posts/{postId}(postId=${post.id})}" th:object="${post}"> <!--We use th:object attribute to point to the model object that is sent from the Spring MVC controller-->
                    <!--<input type="hidden" th:field="*{id}">-->
-                    <input type="hidden" th:field="*{url}">
+                    <input type="hidden" th:field="*{url}">           <!--/{postId}(postId=${post.id})-->
                     <input type="hidden" th:field="*{createdOn}">
                     <div class="mb-3">
                         <label class="form-label">Title</label>
